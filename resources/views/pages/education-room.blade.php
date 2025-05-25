@@ -96,7 +96,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="target" class="form-label">Target</label>
+                            <label for="target" class="form-label">Capaian Pembelajaran</label>
                             <textarea class="form-control" id="target" name="target" rows="3"></textarea>
                         </div>
 
