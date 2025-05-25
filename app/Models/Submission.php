@@ -17,6 +17,6 @@ class Submission extends Model
         return $this->belongsTo(Group::class);
     }
     public function creator() {
-        return $this->belongsTo(User::class, 'created_by');
+        return $this->belongsTo(User::class, 'user_id');
     }
 }
