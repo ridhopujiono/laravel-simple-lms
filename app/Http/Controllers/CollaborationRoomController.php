@@ -46,9 +46,23 @@ class CollaborationRoomController extends Controller
 
     public function destroy(CollaborationRoom $collaboration_room)
     {
+        foreach ($collaboration_room->groups as $group) {
+            // Hapus pivot relasi ke users
+            $group->members()->detach();
+
+            // Hapus submissions
+            $group->submissions()->delete();
+
+            // Hapus group
+            $group->delete();
+        }
+
+        // Hapus room
         $collaboration_room->delete();
+
         return redirect()->route('collaboration-rooms.index')->with('success', 'Room berhasil dihapus');
     }
+
 
     public function storeGroup(Request $request, CollaborationRoom $collaboration_room)
     {
