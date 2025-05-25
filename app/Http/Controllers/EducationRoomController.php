@@ -57,6 +57,43 @@ class EducationRoomController extends Controller
     {
         return view('pages.education-room-detail', compact('education_room'));
     }
+    public function update(Request $request, EducationRoom $education_room)
+    {
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'introduction_video_path' => 'nullable|file|mimes:mp4,avi,mkv',
+            'purpose' => 'nullable|string',
+            'target' => 'nullable|string',
+            'material_path' => 'nullable|file|mimes:pptx',
+            'youtube_link' => 'nullable|url',
+            'reference_links' => 'nullable|string',
+        ]);
+
+        // Upload ulang video jika ada
+        if ($request->hasFile('introduction_video_path')) {
+            $file = $request->file('introduction_video_path');
+            $filename = uniqid() . '.' . $file->getClientOriginalExtension();
+            $data['introduction_video_path'] = $file->storeAs('videos', $filename, 'public');
+        }
+
+        // Upload ulang materi jika ada
+        if ($request->hasFile('material_path')) {
+            $file = $request->file('material_path');
+            $filename = uniqid() . '.' . $file->getClientOriginalExtension();
+            $data['material_path'] = $file->storeAs('materials', $filename, 'public');
+        }
+
+        // Ubah referensi dari string ke array JSON
+        if (!empty($data['reference_links'])) {
+            $data['reference_links'] = json_encode(array_map('trim', explode(',', $data['reference_links'])));
+        }
+
+        $education_room->update($data);
+
+        return redirect()->back()->with('success', 'Room berhasil diperbarui.');
+    }
+
 
     public function destroy(EducationRoom $education_room)
     {
