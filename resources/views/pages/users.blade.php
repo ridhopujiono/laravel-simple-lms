@@ -13,6 +13,18 @@
         </button>
     </div>
 
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if (session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
+
     <div class="card">
         <div class="card-body">
             <table class="table table-bordered table-hover align-middle">
@@ -43,14 +55,23 @@
                                 @endforeach
                             </td>
                             <td>
-                                <form action="{{ route('users.destroy', $user->id) }}" method="POST"
-                                    onsubmit="return confirm('Yakin ingin menghapus pengguna ini?');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button class="btn btn-sm btn-danger">
-                                        <i class="bi bi-trash"></i>
+                                <div class="d-flex gap-1">
+                                    <!-- Tombol Edit -->
+                                    <button class="btn btn-sm btn-secondary" data-bs-toggle="modal"
+                                        data-bs-target="#editUserModal{{ $user->id }}">
+                                        <i class="bi bi-pencil"></i>
                                     </button>
-                                </form>
+
+                                    <!-- Tombol Hapus -->
+                                    <form action="{{ route('users.destroy', $user->id) }}" method="POST"
+                                        onsubmit="return confirm('Yakin ingin menghapus pengguna ini?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="btn btn-sm btn-danger">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                     @empty
@@ -106,4 +127,53 @@
             </div>
         </div>
     </div>
+
+    @foreach ($users as $user)
+<div class="modal fade" id="editUserModal{{ $user->id }}" tabindex="-1" aria-labelledby="editUserModalLabel{{ $user->id }}" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="{{ route('users.update', $user->id) }}" method="POST">
+                @csrf
+                @method('PUT')
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editUserModalLabel{{ $user->id }}">Edit Pengguna - {{ $user->name }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Nama</label>
+                        <input type="text" name="name" class="form-control" value="{{ $user->name }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" name="email" class="form-control" value="{{ $user->email }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Password (Kosongkan jika tidak ingin diganti)</label>
+                        <input type="password" name="password" class="form-control">
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">Role:</label>
+                        @foreach ($roles as $role)
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="roles[]" value="{{ $role->name }}"
+                                    id="edit_role_{{ $role->id }}_{{ $user->id }}"
+                                    {{ $user->roles->contains('name', $role->name) ? 'checked' : '' }}>
+                                <label class="form-check-label" for="edit_role_{{ $role->id }}_{{ $user->id }}">
+                                    {{ $role->name }}
+                                </label>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@endforeach
+
 @endsection

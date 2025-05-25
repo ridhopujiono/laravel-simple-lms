@@ -35,9 +35,34 @@ class UserController extends Controller
         return redirect()->route('users.index')->with('success', 'User berhasil dibuat dan role ditambahkan.');
     }
 
-    public function update(Request $request, $id) {}
+    public function update(Request $request, User $user)
+    {
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $user->id,
+            'password' => 'nullable|min:6',
+            'roles' => 'nullable|array',
+        ]);
 
-    public function destroy($id) {
+        if (!empty($data['password'])) {
+            $data['password'] = bcrypt($data['password']);
+        } else {
+            unset($data['password']);
+        }
+
+        $user->update($data);
+
+        // Sinkronisasi roles
+        if ($request->has('roles')) {
+            $user->syncRoles($request->roles);
+        }
+
+        return redirect()->back()->with('success', 'Data pengguna berhasil diperbarui.');
+    }
+
+
+    public function destroy($id)
+    {
         $user = User::findOrFail($id);
         $user->delete();
 
