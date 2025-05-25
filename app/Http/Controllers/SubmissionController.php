@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Submission;
+use Illuminate\Support\Facades\Storage;
 
 class SubmissionController extends Controller
 {
@@ -25,4 +26,11 @@ class SubmissionController extends Controller
         return redirect()->back()->with('success', 'Submission berhasil ditambahkan.');
     }
 
+    public function destroy(Submission $submission)
+    {
+        // Delete file
+        Storage::delete($submission->file_path);
+        $submission->delete();
+        return redirect()->back()->with('success', 'Submission berhasil dihapus.');
+    }
 }

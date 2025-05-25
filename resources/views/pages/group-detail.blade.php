@@ -66,6 +66,7 @@
                             <th>Deskripsi</th>
                             <th>Dibuat Oleh</th>
                             <th>Tanggal</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -80,6 +81,17 @@
                                 <td>{{ $submission->description }}</td>
                                 <td>{{ $submission->creator->name }}</td>
                                 <td>{{ \Date::parse($submission->created_at)->format('d M Y H:i') }}</td>
+                                <td>
+                                    <div class="d-flex gap-2">
+                                        <form action="{{ route('submissions.destroy', $submission) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus submission ini?')">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
                             </tr>
                         @empty
                             <tr>
