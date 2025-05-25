@@ -38,6 +38,25 @@ class CollaborationRoomController extends Controller
         return redirect()->back()->with('success', 'Room berhasil ditambahkan.');
     }
 
+    public function update(Request $request, CollaborationRoom $collaboration_room)
+    {
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'instruction' => 'nullable|string',
+            'file_path' => 'nullable|file|mimes:pdf,doc,docx,ppt,pptx,xls,xlsx,csv',
+        ]);
+
+        if ($request->hasFile('file_path')) {
+            $file = $request->file('file_path');
+            $filename = uniqid() . '.' . $file->getClientOriginalExtension();
+            $data['file_path'] = $file->storeAs('collaboration-files', $filename, 'public');
+        }
+
+        $collaboration_room->update($data);
+
+        return redirect()->back()->with('success', 'Room berhasil diperbarui.');
+    }
 
     public function show(CollaborationRoom $collaboration_room)
     {
@@ -55,8 +74,8 @@ class CollaborationRoomController extends Controller
             $group->submissions()->delete();
 
             DB::table('comments')
-            ->where('commentable_type', Group::class)
-            ->where('commentable_id', $group->id)->delete();
+                ->where('commentable_type', Group::class)
+                ->where('commentable_id', $group->id)->delete();
             // Hapus group
             $group->delete();
         }
