@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Room as CollaborationRoom;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class CollaborationRoomController extends Controller
 {
@@ -53,6 +54,9 @@ class CollaborationRoomController extends Controller
             // Hapus submissions
             $group->submissions()->delete();
 
+            DB::table('comments')
+            ->where('commentable_type', Group::class)
+            ->where('commentable_id', $group->id)->delete();
             // Hapus group
             $group->delete();
         }
@@ -86,6 +90,7 @@ class CollaborationRoomController extends Controller
     {
         $group->load('members');
         $group->load('submissions');
+        $group->load('submissions.creator');
         $group->load('user');
         return view('pages.group-detail', compact('group'));
     }
