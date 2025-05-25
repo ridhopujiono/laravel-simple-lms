@@ -78,6 +78,7 @@
                                     </a>
                                 </td>
                                 <td>{{ $submission->description }}</td>
+                                <td>{{ $submission->creator->name }}</td>
                                 <td>{{ \Date::parse($submission->created_at)->format('d M Y H:i') }}</td>
                             </tr>
                         @empty
