@@ -15,8 +15,8 @@
     <link rel="stylesheet" href="{{ asset('templates/dist/assets/css/app.css') }}">
     <link rel="shortcut icon" href="{{ asset('templates/dist/assets/images/favicon.svg') }}" type="image/x-icon">
     <!-- Include Editor style. -->
-    <link href="https://cdn.jsdelivr.net/npm/froala-editor@latest/css/froala_editor.pkgd.min.css" rel="stylesheet"
-        type="text/css" />
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet">
     @commentsStyles
 </head>
 

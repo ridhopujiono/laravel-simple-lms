@@ -219,11 +219,16 @@
     @endforeach
 
     @push('scripts')
-        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/froala-editor@latest/js/froala_editor.pkgd.min.js">
-        </script>
-
         <script>
-            new FroalaEditor('textarea');
+            new Quill('#description', {
+                theme: 'snow'
+            });
+            new Quill('#purpose', {
+                theme: 'snow'
+            });
+            new Quill('#target', {
+                theme: 'snow'
+            });
         </script>
     @endpush
 
