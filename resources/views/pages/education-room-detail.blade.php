@@ -48,14 +48,14 @@
                     <div class="col-md-6">
                         <h6>Tujuan Pembelajaran:</h6>
                         <p style="
-                            white-space: pre-wrap;
+                            white-space: pre-line;
                         ">
                             {{ $education_room->purpose ?? '-' }}</p>
                     </div>
                     <div class="col-md-6">
                         <h6>Capaian Pembelajaran :</h6>
                         <p style="
-    white-space: pre-wrap;
+    white-space: pre-line;
 ">{{ $education_room->target ?? '-' }}</p>
                     </div>
                 </div>
