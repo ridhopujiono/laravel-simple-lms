@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,9 +14,12 @@
     <link rel="stylesheet" href="{{ asset('templates/dist/assets/vendors/bootstrap-icons/bootstrap-icons.css') }}">
     <link rel="stylesheet" href="{{ asset('templates/dist/assets/css/app.css') }}">
     <link rel="shortcut icon" href="{{ asset('templates/dist/assets/images/favicon.svg') }}" type="image/x-icon">
-
+    <!-- Include Editor style. -->
+    <link href="https://cdn.jsdelivr.net/npm/froala-editor@latest/css/froala_editor.pkgd.min.css" rel="stylesheet"
+        type="text/css" />
     @commentsStyles
 </head>
+
 <body>
     <div id="app">
         @include('layouts.sidebar')
@@ -35,9 +39,9 @@
     <script src="{{ asset('templates/dist/assets/vendors/apexcharts/apexcharts.js') }}"></script>
     <script src="{{ asset('templates/dist/assets/js/pages/dashboard.js') }}"></script>
     <script src="{{ asset('templates/dist/assets/js/main.js') }}"></script>
-    <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
 
     @stack('scripts')
     @commentsScripts
 </body>
+
 </html>
