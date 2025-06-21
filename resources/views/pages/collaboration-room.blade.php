@@ -163,10 +163,10 @@
 <script>
     let editorInstances = {};
 
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
         // Tambahkan editor untuk "Tambah Room"
         const modalCreate = document.getElementById('createRoomModal');
-        modalCreate.addEventListener('shown.bs.modal', function () {
+        modalCreate.addEventListener('shown.bs.modal', function() {
             if (!editorInstances['create']) {
                 ClassicEditor
                     .create(document.querySelector('#instruction'))
@@ -178,9 +178,17 @@
         });
 
         // Tambahkan editor untuk tiap modal edit
-        @foreach ($rooms as $room)
-        const modalEdit{{ $room->id }} = document.getElementById('editRoomModal{{ $room->id }}');
-        modalEdit{{ $room->id }}.addEventListener('shown.bs.modal', function () {
+        @foreach($rooms as $room)
+        const modalEdit {
+            {
+                $room - > id
+            }
+        } = document.getElementById('editRoomModal{{ $room->id }}');
+        modalEdit {
+            {
+                $room - > id
+            }
+        }.addEventListener('shown.bs.modal', function() {
             const textareaId = '#instruction{{ $room->id }}';
             if (!editorInstances['{{ $room->id }}']) {
                 ClassicEditor
